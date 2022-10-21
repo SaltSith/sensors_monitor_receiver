@@ -30,8 +30,8 @@ viewer_event_handler_process_in_message(uint8_t *msg, size_t msg_len)
     assert(in_msg != NULL);
 
     int result = pb_helper_decode_msg(msg, msg_len, in_msg);
-    // assert(result != 0);
-    printf("deocde result = %d\r\n", result);
+    assert(result == 0);
+
     free(msg);
 
     switch (in_msg->which_msg) {
