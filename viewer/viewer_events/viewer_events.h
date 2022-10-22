@@ -10,8 +10,7 @@ typedef enum {
 
 typedef struct {
     viewer_event_type_t ev;
-    uint8_t *msg;
-    size_t msg_len;
+    void *arg;
 } viewer_event_t;
 
 int viewer_event_handler(viewer_event_t event);

@@ -60,9 +60,9 @@ viewer_queue_get(void)
 }
 
 bool
-viewer_queue_push_event_process_in_message(uint8_t *msg_buff, size_t msg_len)
+viewer_queue_push_event_process_in_message(void *in_msg)
 {
-    viewer_event_t event = {.ev = VIEWER_EVENT_PROCESS_IN_MESSAGE, .msg = msg_buff, .msg_len = msg_len};
+    viewer_event_t event = {.ev = VIEWER_EVENT_PROCESS_IN_MESSAGE, .arg = in_msg};
 
     int result = mq_send(viewer_queue,
                          (char *)&event,
