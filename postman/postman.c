@@ -36,10 +36,12 @@ postman_send_message(uint8_t *msg_buff, size_t msg_buff_size)
 size_t
 postman_hello_message(uint8_t *proto_buff, const size_t buff_size)
 {
-    monitor_MonitorMsg hello_msg;
-    memset(&hello_msg, 0, sizeof(monitor_MonitorMsg));
+    monitor_MonitorMsg *hello_msg = malloc(sizeof(monitor_MonitorMsg));
+    assert(hello_msg != NULL);
 
-    hello_msg.which_msg = monitor_MonitorMsg_hello_async_tag;
+    memset(hello_msg, 0, sizeof(monitor_MonitorMsg));
 
-    return pb_helper_encode_msg(&hello_msg, proto_buff, sizeof(proto_buff));
+    hello_msg->which_msg = monitor_MonitorMsg_hello_async_tag;
+
+    return pb_helper_encode_msg(hello_msg, proto_buff, sizeof(proto_buff));
 }
