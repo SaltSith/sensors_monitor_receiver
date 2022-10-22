@@ -73,4 +73,3 @@ target_link_libraries(test_pb_helper monitor_protos)
 add_test(NAME test_pb_helper COMMAND test_pb_helper)
 
 
-#testing monitor

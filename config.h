@@ -4,5 +4,3 @@
 
 #define PLUGIN_ADDR "tcp://localhost:5558"
 #define PLUGIN_ROLE REQUESTER
-
-#define wakeup_message "Arised\r\n"
