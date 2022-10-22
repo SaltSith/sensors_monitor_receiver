@@ -9,6 +9,7 @@
 #include <stdlib.h>
 
 #include <string.h>
+#include <time.h>
 
 static int viewer_event_handler_process_in_message(void *arg);
 
@@ -22,9 +23,28 @@ static int
 viewer_event_handler_process_in_message(void *arg)
 {
     monitor_MonitorMsg *in_msg = (monitor_MonitorMsg *)arg;
-    printf("ok\r\n");
+
+    if (in_msg->has_timestamp) {
+        struct tm  ts;
+        char buf[80];
+        ts = *localtime(&in_msg->timestamp);
+        strftime(buf, sizeof(buf), "%a %Y-%m-%d %H:%M:%S", &ts);
+        printf("Datetime: %s ", buf);
+    }
+
+    if (in_msg->has_uid) {
+        printf("UID: %u \r\n", in_msg->uid);
+    }
     switch (in_msg->which_msg) {
         case monitor_MonitorMsg_temperature_async_tag:
+            for (uint8_t i = 0; i < in_msg->msg.temperature_async.temperatures_count; i++) {
+                if (in_msg->msg.temperature_async.temperatures[i].has_element && in_msg->msg.temperature_async.temperatures[i].has_temp) {
+                    printf("Element %s temperature %f C\r\n",
+                            in_msg->msg.temperature_async.temperatures[i].element == monitor_Temperature_Element_CPU ? "CPU":"GPU",
+                            in_msg->msg.temperature_async.temperatures[i].temp);
+                }
+            }
+
             break;
 
         case monitor_MonitorMsg_temperature_get_res_tag:
@@ -34,9 +54,10 @@ viewer_event_handler_process_in_message(void *arg)
             break;
 
         default:
+            printf("Unknown message\r\n");
             break;
     }
-
+    printf("\r\n");
     free(in_msg);
 
     return 0;
