@@ -69,5 +69,9 @@ viewer_queue_push_event_process_in_message(void *in_msg)
                          sizeof(viewer_event_t),
                          0);
 
+    if (result) {
+        free(in_msg);
+    }
+
     return result == 0 ? true : false;
 }
